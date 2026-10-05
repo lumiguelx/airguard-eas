@@ -9,6 +9,8 @@ public class Leitura
     
     public Leitura(string pontoId, DateTimeOffset timestampOrigem, double valor, string unidade)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(pontoId);
+
         PontoId = pontoId;
         TimestampOrigem = timestampOrigem;
         Valor = valor;

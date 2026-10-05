@@ -17,5 +17,12 @@ public class LeituraTests
         Assert.Equal(2.5, leitura.Valor);
         Assert.Equal("Pa", leitura.Unidade);
     }
+
+    [Fact]
+    public void Construtor_RejeitaPontoIdVazio()
+    {
+        var momento = new DateTimeOffset(2026, 10, 5, 14, 3, 0, TimeSpan.FromHours(-3));
+        Assert.Throws<ArgumentException>(() => new Leitura("", momento, 2.5, "Pa"));
+    }
 }
 
