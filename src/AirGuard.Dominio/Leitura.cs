@@ -14,6 +14,10 @@ public class Leitura
         {
             throw new ArgumentOutOfRangeException(nameof(unidade));
         }
+        if (!double.IsFinite(valor))
+        {
+            throw new ArgumentOutOfRangeException(nameof(valor));
+        }
 
         PontoId = pontoId;
         TimestampOrigem = timestampOrigem;
