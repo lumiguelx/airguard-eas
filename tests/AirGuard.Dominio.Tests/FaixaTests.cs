@@ -58,4 +58,18 @@ public class FaixaTests
 
         Assert.False(faixa.Contem(60.1));
     }
+
+    [Fact]
+    public void Construtor_RejeitaMinimoMaiorQueMaximo()
+    {
+        Assert.Throws<ArgumentException>(() => new Faixa(24.0, 20.0));
+    }
+
+    [Fact]
+    public void Construtor_AceitaMinimoIgualAoMaximo()
+    {
+        var erro = Record.Exception(() => new Faixa(22.0, 22.0));
+
+        Assert.Null(erro);
+    }
 }
