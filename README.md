@@ -10,19 +10,20 @@ O sistema acompanha pressão, temperatura e umidade de ambientes críticos (ciru
 
 C# · .NET 10 · PostgreSQL + TimescaleDB · MQTT · React · Docker · AWS
 
-## Como compilar
+## Como compilar e testar
 
 ```bash
 git clone https://github.com/lumiguelx/airguard-eas.git
 cd airguard-eas
 dotnet build
+dotnet test
 ```
 
 ## Roadmap
 
 - [x] Especificação ([docs](docs/especificacao-v0.1.pdf))
 - [x] Modelo de domínio inicial
-- [ ] Validação e testes
+- [x] Validação e testes
 - [ ] Ingestão via MQTT e banco de dados
 - [ ] Motor de regras e alarmes
 - [ ] Log de evidências com hash chain
