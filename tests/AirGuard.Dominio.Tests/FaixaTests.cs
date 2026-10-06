@@ -40,4 +40,22 @@ public class FaixaTests
 
         Assert.False(faixa.Contem(4.9));
     }
+
+    [Theory]
+    [InlineData(60.0)]
+    [InlineData(-1000.0)]
+    public void Contem_FaixaSemMinimo_AceitaValorAbaixoDoMaximo(double valor)
+    {
+        var faixa = new Faixa(null, 60.0);
+
+        Assert.True(faixa.Contem(valor));
+    }
+
+    [Fact]
+    public void Contem_FaixaSemMinimo_RejeitaValorAcimaDoMaximo()
+    {
+        var faixa = new Faixa(null, 60.0);
+
+        Assert.False(faixa.Contem(60.1));
+    }
 }
