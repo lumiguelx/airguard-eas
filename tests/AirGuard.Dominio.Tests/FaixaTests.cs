@@ -72,4 +72,10 @@ public class FaixaTests
 
         Assert.Null(erro);
     }
+
+    [Fact]
+    public void Construtor_RejeitaFaixaSemLimites()
+    {
+        Assert.Throws<ArgumentException>(() => new Faixa(null, null));
+    }
 }
