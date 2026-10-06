@@ -11,6 +11,11 @@ public class Faixa
         {
             throw new ArgumentException("O mínimo não pode ser maior que o máximo.");
         }
+        if (minimo is null && maximo is null)
+        {
+            throw new ArgumentException("A faixa precisa de pelo menos um limite.");
+        }
+
 
         Minimo = minimo;
         Maximo = maximo;
