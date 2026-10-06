@@ -31,5 +31,15 @@ public class LeituraTests
 
         Assert.Throws<ArgumentOutOfRangeException>(() => new Leitura("UTI-01-PRESSAO", momento, 2.5,(Unidade)99));
     }
+
+    [Theory]
+    [InlineData(double.NaN)]
+    [InlineData(double.PositiveInfinity)]
+    [InlineData(double.NegativeInfinity)]
+    public void Construtor_RejeitaValorNaoFinito(double valor)
+    {
+        var momento = new DateTimeOffset(2026, 10, 5, 14, 3, 0, TimeSpan.FromHours(-3));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new Leitura("UTI-01-PRESSAO", momento, valor, Unidade.Pascal));
+    }
 }
 
