@@ -37,4 +37,28 @@ public class PerfilTests
 
         Assert.Same(v2, perfil.VersaoVigenteEm(marco));
     }
+
+    [Fact]
+    public void VersaoVigenteEm_DataNoInicioDaSegundaVersao_RetornaASegunda()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var v2 = new VersaoDoPerfil(2, new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var perfil = new Perfil(new List<VersaoDoPerfil> { v1, v2 });
+
+        var inicioDaV2 = new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero);
+
+        Assert.Same(v2, perfil.VersaoVigenteEm(inicioDaV2));
+    }
+
+    [Fact]
+    public void VersaoVigenteEm_DataAntesDaPrimeiraVersao_RetornaNulo()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var v2 = new VersaoDoPerfil(2, new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var perfil = new Perfil(new List<VersaoDoPerfil> { v1, v2 });
+
+        var antesDaV1 = new DateTimeOffset(2025, 12, 15, 0, 0, 0, TimeSpan.Zero);
+
+        Assert.Null(perfil.VersaoVigenteEm(antesDaV1));
+    }
 }
