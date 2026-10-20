@@ -24,4 +24,26 @@ public class Perfil
 
         return vigente;
     }
+
+    public Conformidade Avaliar(Leitura leitura)
+    {
+        var versao = VersaoVigenteEm(leitura.TimestampOrigem);
+        if (versao is null)
+        {
+            return Conformidade.SemRegra;
+        }
+
+        var faixa = versao.FaixaPara(leitura.Unidade);
+        if (faixa is null)
+        {
+            return Conformidade.SemRegra;
+        }
+
+        if (faixa.Contem(leitura.Valor))
+        {
+            return Conformidade.Conforme;
+        }
+
+        return Conformidade.NaoConforme;
+    }
 }
