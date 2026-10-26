@@ -3,6 +3,21 @@ namespace AirGuard.Dominio.Tests;
 public class PerfilTests
 {
     [Fact]
+    public void Construtor_ListaAlteradaDepois_NaoMudaOPerfil()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var v2 = new VersaoDoPerfil(2, new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var versoes = new List<VersaoDoPerfil> { v1 };
+        var perfil = new Perfil(versoes);
+
+        versoes.Add(v2);
+
+        var marco = new DateTimeOffset(2026, 3, 10, 0, 0, 0, TimeSpan.Zero);
+
+        Assert.Same(v1, perfil.VersaoVigenteEm(marco));
+    }
+
+    [Fact]
     public void VersaoVigenteEm_DataAntesDaSegundaVersao_RetornaAPrimeira()
     {
         var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
