@@ -11,6 +11,15 @@ public class Perfil
             throw new ArgumentException("O perfil precisa de pelo menos uma versao.");
         }
 
+        var numeros = new HashSet<int>();
+        foreach (var versao in versoes)
+        {
+            if (!numeros.Add(versao.Numero))
+            {
+                throw new ArgumentException("Duas versoes do perfil nao podem ter o mesmo numero.");
+            }
+        }
+
         _versoes = new List<VersaoDoPerfil>(versoes);
     }
 
