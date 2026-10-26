@@ -18,6 +18,30 @@ public class PerfilTests
     }
 
     [Fact]
+    public void Construtor_RejeitaListaVazia()
+    {
+        Assert.Throws<ArgumentException>(() => new Perfil(new List<VersaoDoPerfil>()));
+    }
+
+    [Fact]
+    public void Construtor_RejeitaNumeroDeVersaoRepetido()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var outraV1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 3, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+
+        Assert.Throws<ArgumentException>(() => new Perfil(new List<VersaoDoPerfil> { v1, outraV1 }));
+    }
+
+    [Fact]
+    public void Construtor_RejeitaInicioDeVigenciaRepetido()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var v2 = new VersaoDoPerfil(2, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+
+        Assert.Throws<ArgumentException>(() => new Perfil(new List<VersaoDoPerfil> { v1, v2 }));
+    }
+
+    [Fact]
     public void VersaoVigenteEm_DataAntesDaSegundaVersao_RetornaAPrimeira()
     {
         var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
