@@ -6,7 +6,7 @@ public class Perfil
 
     public Perfil(List<VersaoDoPerfil> versoes)
     {
-        _versoes = versoes;
+        _versoes = new List<VersaoDoPerfil>(versoes);
     }
 
     public VersaoDoPerfil? VersaoVigenteEm(DateTimeOffset momento)
