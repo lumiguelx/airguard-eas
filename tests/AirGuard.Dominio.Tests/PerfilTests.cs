@@ -33,6 +33,15 @@ public class PerfilTests
     }
 
     [Fact]
+    public void Construtor_RejeitaInicioDeVigenciaRepetido()
+    {
+        var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+        var v2 = new VersaoDoPerfil(2, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());
+
+        Assert.Throws<ArgumentException>(() => new Perfil(new List<VersaoDoPerfil> { v1, v2 }));
+    }
+
+    [Fact]
     public void VersaoVigenteEm_DataAntesDaSegundaVersao_RetornaAPrimeira()
     {
         var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());

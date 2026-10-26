@@ -12,11 +12,16 @@ public class Perfil
         }
 
         var numeros = new HashSet<int>();
+        var inicios = new HashSet<DateTimeOffset>();
         foreach (var versao in versoes)
         {
             if (!numeros.Add(versao.Numero))
             {
                 throw new ArgumentException("Duas versoes do perfil nao podem ter o mesmo numero.");
+            }
+            if (!inicios.Add(versao.InicioVigencia))
+            {
+                throw new ArgumentException("Duas versoes nao podem comecar no mesmo momento");
             }
         }
 
