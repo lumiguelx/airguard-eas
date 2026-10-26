@@ -18,6 +18,12 @@ public class PerfilTests
     }
 
     [Fact]
+    public void Construtor_RejeitaListaVazia()
+    {
+        Assert.Throws<ArgumentException>(() => new Perfil(new List<VersaoDoPerfil>()));
+    }
+
+    [Fact]
     public void VersaoVigenteEm_DataAntesDaSegundaVersao_RetornaAPrimeira()
     {
         var v1 = new VersaoDoPerfil(1, new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero), new Dictionary<Unidade, Faixa>());

@@ -6,6 +6,11 @@ public class Perfil
 
     public Perfil(List<VersaoDoPerfil> versoes)
     {
+        if (versoes.Count == 0)
+        {
+            throw new ArgumentException("O perfil precisa de pelo menos uma versao.");
+        }
+
         _versoes = new List<VersaoDoPerfil>(versoes);
     }
 
