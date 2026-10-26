@@ -11,7 +11,7 @@ public class VersaoDoPerfil
     {
         Numero = numero;
         InicioVigencia = inicioVigencia;
-        _faixas = faixas;
+        _faixas = new Dictionary<Unidade, Faixa>(faixas);
     }
 
     public Faixa? FaixaPara(Unidade unidade)
