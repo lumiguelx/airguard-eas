@@ -1,0 +1,27 @@
+namespace AirGuard.Dominio;
+
+public class DetectorDeExcursao
+{
+    private readonly TimeSpan _tolerancia;
+    private DateTimeOffset? _foraDesde;
+
+    public DetectorDeExcursao(TimeSpan tolerancia)
+    {
+        _tolerancia = tolerancia;
+    }
+
+    public bool EmExcursao { get; private set; }
+
+    public void Registrar(DateTimeOffset momento, Conformidade conformidade)
+    {
+        if (_foraDesde is null)
+        {
+            _foraDesde = momento;
+        }
+
+        if (momento - _foraDesde > _tolerancia)
+        {
+            EmExcursao = true;
+        }
+    }
+}
