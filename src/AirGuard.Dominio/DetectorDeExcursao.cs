@@ -11,6 +11,7 @@ public class DetectorDeExcursao
     }
 
     public bool EmExcursao { get; private set; }
+    public DateTimeOffset? InicioDaExcursao { get; private set; }
 
     public void Registrar(DateTimeOffset momento, Conformidade conformidade)
     {
@@ -26,9 +27,10 @@ public class DetectorDeExcursao
             _foraDesde = momento;
         }
 
-        if (momento - _foraDesde > _tolerancia)
+        if (!EmExcursao && momento - _foraDesde > _tolerancia)
         {
             EmExcursao = true;
+            InicioDaExcursao = momento;
         }
     }
 }

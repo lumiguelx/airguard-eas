@@ -52,4 +52,17 @@ public class DetectorDeExcursaoTests
 
         Assert.False(detector.EmExcursao);
     }
+
+    [Fact]
+    public void Registrar_ContinuaForaDepoisDeAbrir_InicioFicaNaHoraEmQuePassou()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(85), Conformidade.NaoConforme);
+
+        Assert.Equal(inicio.AddSeconds(65), detector.InicioDaExcursao);
+    }
 }
