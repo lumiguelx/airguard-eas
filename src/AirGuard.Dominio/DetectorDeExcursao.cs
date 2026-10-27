@@ -17,6 +17,7 @@ public class DetectorDeExcursao
         if (conformidade == Conformidade.Conforme)
         {
             _foraDesde = null;
+            EmExcursao = false;
             return;
         }
 
