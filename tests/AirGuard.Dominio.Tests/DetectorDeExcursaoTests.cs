@@ -103,4 +103,18 @@ public class DetectorDeExcursaoTests
 
         Assert.True(detector.EmExcursao);
     }
+
+    [Fact]
+    public void Registrar_LeituraAtrasada_NaoEntraNaContagem()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(120), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(30), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(130), Conformidade.NaoConforme);
+
+        Assert.False(detector.EmExcursao);
+    }
 }

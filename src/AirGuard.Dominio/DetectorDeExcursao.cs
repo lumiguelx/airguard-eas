@@ -4,6 +4,7 @@ public class DetectorDeExcursao
 {
     private readonly TimeSpan _tolerancia;
     private DateTimeOffset? _foraDesde;
+    private DateTimeOffset? _ultimoMomento;
 
     public DetectorDeExcursao(TimeSpan tolerancia)
     {
@@ -19,6 +20,13 @@ public class DetectorDeExcursao
         {
             return;
         }
+
+        if (momento < _ultimoMomento)
+        {
+            return;
+        }
+
+        _ultimoMomento = momento;
 
         if (conformidade == Conformidade.Conforme)
         {
