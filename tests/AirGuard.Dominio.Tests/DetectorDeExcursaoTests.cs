@@ -90,4 +90,17 @@ public class DetectorDeExcursaoTests
 
         Assert.True(detector.EmExcursao);
     }
+
+    [Fact]
+    public void Registrar_SemRegraDuranteExcursao_NaoFechaExcursao()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.SemRegra);
+
+        Assert.True(detector.EmExcursao);
+    }
 }
