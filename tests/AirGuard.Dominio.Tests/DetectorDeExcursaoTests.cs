@@ -65,4 +65,16 @@ public class DetectorDeExcursaoTests
 
         Assert.Equal(inicio.AddSeconds(65), detector.InicioDaExcursao);
     }
+
+    [Fact]
+    public void Registrar_SemRegraPorMaisQueATolerancia_NaoAbreExcursao()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.SemRegra);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.SemRegra);
+
+        Assert.False(detector.EmExcursao);
+    }
 }

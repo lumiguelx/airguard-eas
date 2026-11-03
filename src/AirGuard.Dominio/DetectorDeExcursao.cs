@@ -15,6 +15,11 @@ public class DetectorDeExcursao
 
     public void Registrar(DateTimeOffset momento, Conformidade conformidade)
     {
+        if (conformidade == Conformidade.SemRegra)
+        {
+            return;
+        }
+
         if (conformidade == Conformidade.Conforme)
         {
             _foraDesde = null;
