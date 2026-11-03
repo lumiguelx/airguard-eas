@@ -8,6 +8,11 @@ public class DetectorDeExcursao
 
     public DetectorDeExcursao(TimeSpan tolerancia)
     {
+        if (tolerancia <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(tolerancia));
+        }
+
         _tolerancia = tolerancia;
     }
 

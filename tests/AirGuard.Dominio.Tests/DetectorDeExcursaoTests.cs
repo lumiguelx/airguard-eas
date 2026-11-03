@@ -117,4 +117,12 @@ public class DetectorDeExcursaoTests
 
         Assert.False(detector.EmExcursao);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-10)]
+    public void Construtor_RejeitaToleranciaZeroOuNegativa(int segundos)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new DetectorDeExcursao(TimeSpan.FromSeconds(segundos)));
+    }
 }
