@@ -18,6 +18,7 @@ public class DetectorDeExcursao
 
     public bool EmExcursao { get; private set; }
     public DateTimeOffset? InicioDaExcursao { get; private set; }
+    public DateTimeOffset? FimDaExcursao { get; private set; }
 
     public void Registrar(DateTimeOffset momento, Conformidade conformidade)
     {
@@ -36,6 +37,10 @@ public class DetectorDeExcursao
         if (conformidade == Conformidade.Conforme)
         {
             _foraDesde = null;
+            if (EmExcursao)
+            {
+                FimDaExcursao = momento;
+            }
             EmExcursao = false;
             return;
         }

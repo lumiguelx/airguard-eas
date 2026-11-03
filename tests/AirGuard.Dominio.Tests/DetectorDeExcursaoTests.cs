@@ -125,4 +125,31 @@ public class DetectorDeExcursaoTests
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new DetectorDeExcursao(TimeSpan.FromSeconds(segundos)));
     }
+
+    [Fact]
+    public void Registrar_FechaExcursao_GuardaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+
+        Assert.Equal(inicio.AddSeconds(70), detector.FimDaExcursao);
+    }
+
+    [Fact]
+    public void Registrar_ConformeDepoisDeFechar_NaoMudaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(80), Conformidade.Conforme);
+
+        Assert.Equal(inicio.AddSeconds(70), detector.FimDaExcursao);
+    }
 }
