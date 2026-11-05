@@ -65,4 +65,106 @@ public class DetectorDeExcursaoTests
 
         Assert.Equal(inicio.AddSeconds(65), detector.InicioDaExcursao);
     }
+
+    [Fact]
+    public void Registrar_SemRegraPorMaisQueATolerancia_NaoAbreExcursao()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.SemRegra);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.SemRegra);
+
+        Assert.False(detector.EmExcursao);
+    }
+
+    [Fact]
+    public void Registrar_SemRegraEntreLeiturasFora_NaoZeraAContagem()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(30), Conformidade.SemRegra);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+
+        Assert.True(detector.EmExcursao);
+    }
+
+    [Fact]
+    public void Registrar_SemRegraDuranteExcursao_NaoFechaExcursao()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.SemRegra);
+
+        Assert.True(detector.EmExcursao);
+    }
+
+    [Fact]
+    public void Registrar_LeituraAtrasada_NaoEntraNaContagem()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(120), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(30), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(130), Conformidade.NaoConforme);
+
+        Assert.False(detector.EmExcursao);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-10)]
+    public void Construtor_RejeitaToleranciaZeroOuNegativa(int segundos)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new DetectorDeExcursao(TimeSpan.FromSeconds(segundos)));
+    }
+
+    [Fact]
+    public void Registrar_FechaExcursao_GuardaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+
+        Assert.Equal(inicio.AddSeconds(70), detector.FimDaExcursao);
+    }
+
+    [Fact]
+    public void Registrar_ConformeDepoisDeFechar_NaoMudaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(80), Conformidade.Conforme);
+
+        Assert.Equal(inicio.AddSeconds(70), detector.FimDaExcursao);
+    }
+
+    [Fact]
+    public void Registrar_AbreDeNovo_LimpaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(80), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(150), Conformidade.NaoConforme);
+
+        Assert.Null(detector.FimDaExcursao);
+    }
 }
