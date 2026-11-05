@@ -152,4 +152,19 @@ public class DetectorDeExcursaoTests
 
         Assert.Equal(inicio.AddSeconds(70), detector.FimDaExcursao);
     }
+
+    [Fact]
+    public void Registrar_AbreDeNovo_LimpaOFim()
+    {
+        var detector = new DetectorDeExcursao(TimeSpan.FromSeconds(60));
+        var inicio = new DateTimeOffset(2026, 1, 1, 10, 0, 5, TimeSpan.Zero);
+
+        detector.Registrar(inicio, Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(65), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(70), Conformidade.Conforme);
+        detector.Registrar(inicio.AddSeconds(80), Conformidade.NaoConforme);
+        detector.Registrar(inicio.AddSeconds(150), Conformidade.NaoConforme);
+
+        Assert.Null(detector.FimDaExcursao);
+    }
 }
